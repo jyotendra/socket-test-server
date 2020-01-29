@@ -1,13 +1,28 @@
 import { Socket } from 'socket.io';
+import * as express from 'express';
 import * as httpServer from 'http';
 import * as spcketIO from 'socket.io';
 
-var http = httpServer.createServer();
-var io = spcketIO(http);
+const app = express();
+const http = httpServer.createServer(app);
+const io = spcketIO(http);
 
 const socketPort = 4001;
 
 const namespace = '/decoder';
+
+/**
+ * Declare REST related routes below
+ */
+app.get('/test', function(_req, res) {
+  res.json({
+    test: 'This is a test message from REST',
+  });
+});
+
+/**
+ * Declare socket.io replated routes below
+ */
 
 io.of(namespace).on('connection', function(_socket: Socket) {
   console.log('a user connected');
